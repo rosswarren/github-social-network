@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 const cache = {
   getValue(key) {
     return localStorage.getItem(key);
@@ -12,7 +14,7 @@ const cache = {
 
 const githubAPIFetchOptions = {
   headers: {
-    Authorization: 'token df11df6ca1d562568a5127cae0c8182b4a48ed88',
+    Authorization: `token ${Cookies.get('github-access-token')}`,
     Accept: 'application/vnd.github.black-cat-preview+json'
   }
 };
