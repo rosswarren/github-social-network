@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import vis from 'vis';
+
 import getPullRequests from './data';
 
 import './App.css';
@@ -29,7 +30,7 @@ function renderVis(element, nodes, edges) {
   );
 }
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
@@ -65,5 +66,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
