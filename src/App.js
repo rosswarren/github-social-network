@@ -29,8 +29,6 @@ function renderVis(element, nodes, edges) {
   );
 }
 
-// df11df6ca1d562568a5127cae0c8182b4a48ed88
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +42,7 @@ class App extends Component {
   componentDidMount() {
     getPullRequests({
       user: 'sky-uk',
-      repo: 'atlas-web-and-tv'
+      repository: 'atlas-web-and-tv'
     }).then(result => this.setState({
       users: result.users,
       reviews: result.reviews

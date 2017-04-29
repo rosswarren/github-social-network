@@ -1,3 +1,14 @@
+const cache = {
+  getValue(key) {
+    return localStorage.getItem(key);
+  },
+  setValue(key, value) {
+    return localStorage.setItem(key, value);
+  },
+  clear() {
+    localStorage.clear();
+  }
+};
 
 const githubAPIFetchOptions = {
   headers: {
@@ -19,7 +30,17 @@ function json(response) {
 }
 
 function get(url) {
-  return fetch(url, githubAPIFetchOptions).then(validateStatus).then(json);
+  if (cache.getValue(url)) {
+    return Promise.resolve(JSON.parse(cache.getValue(url)));
+  }
+
+  return fetch(url, githubAPIFetchOptions)
+    .then(validateStatus)
+    .then(json)
+    .then((data) => {
+      cache.setValue(url, JSON.stringify(data));
+      return data;
+    });
 }
 
 function buildListPullRequestsUrl(repositoryInfo, page) {
@@ -50,7 +71,7 @@ export default function getData(repositoryInfo) {
     reviews: []
   };
 
-  return getPullRequests().then(pullRequests => Promise.all(
+  return getPullRequests(repositoryInfo).then(pullRequests => Promise.all(
     pullRequests.map(
       pr => get(buildReviewsUrl(repositoryInfo, pr.number))
         .then(reviews => reviews
