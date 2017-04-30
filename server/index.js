@@ -2,15 +2,15 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
+const config = require('./config');
+
 const app = express();
 app.use(cookieParser());
 
-const port = process.env.PORT || 3000;
-
 const githubOAuth = require('github-oauth')({
-  githubClient: process.env.GITHUB_KEY,
-  githubSecret: process.env.GITHUB_SECRET,
-  baseURL: `http://localhost:${port}`,
+  githubClient: config.GITHUB_KEY,
+  githubSecret: config.GITHUB_SECRET,
+  baseURL: config.GITHUB_REDIRECT_URL,
   loginURI: '/auth/github',
   callbackURI: '/auth/github/callback',
   scope: 'repo'
@@ -40,6 +40,6 @@ githubOAuth.on('token', (token, serverResponse) => {
   serverResponse.end(JSON.stringify(token));
 });
 
-const server = app.listen(port, () => {
+const server = app.listen(config.PORT, () => {
   console.log('Listening on port %d', server.address().port);
 });

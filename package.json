@@ -41,6 +41,7 @@
     "js-cookie": "^2.1.4",
     "json-loader": "0.5.4",
     "object-assign": "4.1.1",
+    "parse-link-header": "^0.4.1",
     "postcss-loader": "1.2.2",
     "promise": "7.1.1",
     "react-dev-utils": "^0.5.2",
@@ -48,12 +49,13 @@
     "url-loader": "0.5.7",
     "vis": "^4.19.1",
     "webpack": "1.14.0",
-    "webpack-dev-server": "1.16.2",
+    "webpack-dev-server": "^1.16.2",
     "webpack-manifest-plugin": "1.1.0",
     "whatwg-fetch": "2.0.2"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node server/index.js",
+    "dev": "NODE_ENV=development node config/dev-server",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "lint": "eslint ."

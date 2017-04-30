@@ -1,11 +1,6 @@
 .App {
   text-align: center;
-  height: 600px;
-}
-
-.graph {
   height: 100%;
-  width: 100%;
 }
 
 .App-logo {
