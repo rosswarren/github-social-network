@@ -30,12 +30,26 @@ function renderVis(element, nodes, edges) {
 }
 
 export default class Graph extends Component {
-  componentDidUpdate() {
-    renderVis(
+  componentDidMount() {
+    this.vis = renderVis(
       this.container,
-      this.props.users.map(user => ({ id: user.name, value: user.value, label: user.name })),
-      this.props.reviews.map(review => ({ ...review, arrows: { to: { scaleFactor: 0.5 } } }))
+      this.props.users.map(user => ({
+        id: user.name,
+        value: user.value,
+        label: user.name,
+        shape: 'circularImage',
+        image: `https://avatars.githubusercontent.com/${user.name}?size=80`,
+        font: { strokeWidth: 4, strokeColor: '#FFF' }
+      })),
+      this.props.reviews.map(review => ({
+        ...review,
+        arrows: { to: { scaleFactor: 0.5 } }
+      }))
     );
+  }
+
+  componentWillUnmount() {
+    this.vis.destroy();
   }
 
   render() {

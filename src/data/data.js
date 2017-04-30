@@ -96,8 +96,8 @@ export function getData(repositoryInfo, limit) {
       pr => get(github.listReviews(repositoryInfo, pr.number), mapReviewsResponse)
         .then(reviews => reviews
           .map((review) => {
-            if (!result.users.find(user => user.name === review.from)) {
-              result.users.push({ name: review.from, value: 0 });
+            if (!result.users.find(user => user.name === review.user)) {
+              result.users.push({ name: review.user, value: 0 });
             }
 
             result.reviews.push({
@@ -113,11 +113,23 @@ export function getData(repositoryInfo, limit) {
   )).then(() => result);
 }
 
-export function calculateResults({ users, reviews }) {
-  const resultUsers = users;
+function applyStateFilters(stateFilters) {
+  const allowedStates = [
+    stateFilters.approvals && 'APPROVED',
+    stateFilters.requestedChanges && 'CHANGES_REQUESTED',
+    stateFilters.comments && 'COMMENTED'
+  ].filter(Boolean);
+
+  return review => allowedStates.indexOf(review.state) !== -1;
+}
+
+export function calculateResults({ users, reviews }, stateFilters) {
+  const resultUsers = users.map(user => ({
+    ...user
+  }));
 
   const reducedReviews = reviews
-    .filter(review => review.state === 'APPROVED' || review.state === 'CHANGES_REQUESTED')
+    .filter(applyStateFilters(stateFilters))
     .filter(review => review.from !== review.to)
     .reduce((acc, review) => {
       const existingReview = acc.find(rv => rv.from === review.from && rv.to === review.to);
