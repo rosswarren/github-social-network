@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import vis from 'vis';
-
-import getPullRequests from './data/data';
 
 import './graph.css';
 
@@ -31,31 +30,11 @@ function renderVis(element, nodes, edges) {
 }
 
 export default class Graph extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      users: [],
-      reviews: [],
-      limit: 12
-    };
-  }
-
-  componentDidMount() {
-    getPullRequests({
-      user: 'sky-uk',
-      repository: 'atlas-web-and-tv'
-    }, this.state.limit).then(result => this.setState({
-      users: result.users,
-      reviews: result.reviews
-    }));
-  }
-
   componentDidUpdate() {
     renderVis(
       this.container,
-      this.state.users.map(user => ({ id: user, value: '1', label: user })),
-      this.state.reviews.map(review => ({ ...review, arrows: { to: { scaleFactor: 0.5 } } }))
+      this.props.users.map(user => ({ id: user.name, value: user.value, label: user.name })),
+      this.props.reviews.map(review => ({ ...review, arrows: { to: { scaleFactor: 0.5 } } }))
     );
   }
 
@@ -65,3 +44,8 @@ export default class Graph extends Component {
     );
   }
 }
+
+Graph.propTypes = {
+  users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  reviews: PropTypes.arrayOf(PropTypes.object).isRequired
+};

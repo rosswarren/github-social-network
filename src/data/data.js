@@ -77,7 +77,7 @@ function getPullRequests(repositoryInfo, limit) {
     });
 }
 
-export default function getData(repositoryInfo, limit) {
+export function getData(repositoryInfo, limit) {
   const result = {
     users: [],
     reviews: []
@@ -86,8 +86,8 @@ export default function getData(repositoryInfo, limit) {
   return getPullRequests(repositoryInfo, limit).then(pullRequests => Promise.all(
     pullRequests.map(
       (pr) => {
-        if (result.users.indexOf(pr.user) === -1) {
-          result.users.push(pr.user);
+        if (!result.users.find(user => user.name === pr.user)) {
+          result.users.push({ name: pr.user, value: 0 });
         }
 
         return pr;
@@ -95,29 +95,57 @@ export default function getData(repositoryInfo, limit) {
     ).map(
       pr => get(github.listReviews(repositoryInfo, pr.number), mapReviewsResponse)
         .then(reviews => reviews
-          .filter(rv => rv.state === 'APPROVED' || rv.state === 'CHANGES_REQUESTED')
           .map((review) => {
-            if (result.users.indexOf(review.user) === -1) {
-              result.users.push(review.user);
+            if (!result.users.find(user => user.name === review.from)) {
+              result.users.push({ name: review.from, value: 0 });
             }
 
-            const matchesUsers = rv => rv.from === review.user && rv.to === pr.user;
-
-            const existingLink = result.reviews.find(matchesUsers);
-
-            if (existingLink) {
-              existingLink.value += 1;
-            } else {
-              result.reviews.push({
-                from: review.user,
-                to: pr.user,
-                value: 1
-              });
-            }
+            result.reviews.push({
+              from: review.user,
+              to: pr.user,
+              state: review.state
+            });
 
             return result;
           })
         )
     )
   )).then(() => result);
+}
+
+export function calculateResults({ users, reviews }) {
+  const resultUsers = users;
+
+  const reducedReviews = reviews
+    .filter(review => review.state === 'APPROVED' || review.state === 'CHANGES_REQUESTED')
+    .filter(review => review.from !== review.to)
+    .reduce((acc, review) => {
+      const existingReview = acc.find(rv => rv.from === review.from && rv.to === review.to);
+
+      if (resultUsers.find(user => user.name === review.from)) {
+        resultUsers.find(user => user.name === review.from).value += 1;
+      } else {
+        resultUsers.push({
+          name: review.from,
+          value: 1
+        });
+      }
+
+      if (existingReview) {
+        existingReview.value += 1;
+      } else {
+        acc.push({
+          from: review.from,
+          to: review.to,
+          value: 1
+        });
+      }
+
+      return acc;
+    }, []);
+
+  return {
+    users: resultUsers,
+    reviews: reducedReviews
+  };
 }
