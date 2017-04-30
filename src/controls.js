@@ -18,6 +18,27 @@ export default function Controls(props) {
           onChange={event => props.updateLimit(event.target.value)}
         />
       </label>
+      <label htmlFor="approvals">
+        <span>Approvals</span>
+        <input
+          id="approvals"
+          type="checkbox"
+        />
+      </label>
+      <label htmlFor="requested-changes">
+        <span>Requested Changes</span>
+        <input
+          id="requested-changes"
+          type="checkbox"
+        />
+      </label>
+      <label htmlFor="comments">
+        <span>Comments</span>
+        <input
+          id="comments"
+          type="checkbox"
+        />
+      </label>
     </form>
   );
 }

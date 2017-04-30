@@ -14,7 +14,7 @@ export default class GraphView extends React.Component {
     this.state = {
       limit: 12,
       users: [],
-      reviews: [],
+      reviews: []
     };
   }
 
