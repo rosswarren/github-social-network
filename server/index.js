@@ -22,6 +22,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build/index.html'));
 });
 
+app.get('/graph', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build/index.html'));
+});
+
 app.get('/auth/github', (req, res) => githubOAuth.login(req, res));
 
 app.get('/auth/github/callback', (req, res) => githubOAuth.callback(req, res, (error, result) => {

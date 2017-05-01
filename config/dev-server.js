@@ -12,7 +12,10 @@ const server = new WebpackDevServer(compiler, {
   proxy: [{
     context: ['/auth/**'],
     target: 'http://localhost:4000'
-  }]
+  }],
+  historyApiFallback: {
+    index: 'index.html'
+  }
 });
 
 server.listen(3000, "127.0.0.1", function() {

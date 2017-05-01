@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { getData, calculateResults } from './data/data';
+import { getData, calculateResults } from '../data/data';
+import Menu from '../menu';
+import debounce from '../utils/debounce';
+
 import Graph from './graph';
 import Controls from './controls';
-import Menu from './menu';
-import debounce from './utils/debounce';
 
 import './graph-view.css';
 
