@@ -4,6 +4,8 @@ test:
   override:
     - npm test
   post:
+    - git config --global user.email "thisisarealemailaddress@mailinator.com"
+    - git config --global user.name "Circle CI Build"
     - git add -f build
     - git commit -nm "build"
 
