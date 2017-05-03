@@ -1,0 +1,11 @@
+test:
+  pre:
+    - npm run build
+  override:
+    - npm test
+
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: github-social-network
