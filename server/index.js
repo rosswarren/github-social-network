@@ -16,14 +16,14 @@ const githubOAuth = require('github-oauth')({
   scope: 'repo'
 });
 
-app.use(express.static(`${__dirname}/build`));
+app.use(express.static(`${__dirname}/../build`));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build/index.html'));
+  res.sendFile(path.join(__dirname, '../build/index.html'));
 });
 
 app.get('/graph', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build/index.html'));
+  res.sendFile(path.join(__dirname, '../build/index.html'));
 });
 
 app.get('/auth/github', (req, res) => githubOAuth.login(req, res));
