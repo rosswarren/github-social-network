@@ -1,5 +1,8 @@
 import parseLinkHeader from 'parse-link-header';
 
+import range from '../utils/range';
+import flattenArrays from '../utils/flatten-arrays';
+
 import github from './github';
 import cache from './cache';
 
@@ -28,14 +31,6 @@ function get({ url, options }, mapper) {
       cache.setValue(url, JSON.stringify(mappedData));
       return mappedData;
     });
-}
-
-function flattenArrays(arrays) {
-  return arrays.reduce((a, b) => a.concat(b));
-}
-
-function range(i) {
-  return Array(i).fill();
 }
 
 function mapReviewsResponse(response) {
@@ -68,7 +63,7 @@ function getPullRequests(repositoryInfo, limit) {
 
       return Promise.all([
         firstPageResponse.json().then(mapPullRequestResponse),
-        ...range(pagesToFetch).map((_, i) => get(
+        ...range(pagesToFetch).map(i => get(
           github.listPullRequests(repositoryInfo, i + 1),
           mapPullRequestResponse
         ))
