@@ -14,7 +14,7 @@ export default function App() {
     <Router>
       <div className="App">
         <Route exact path="/" component={HomeView} />
-        <Route exact path="/graph" component={GraphView} />
+        <Route exact path="/graph/:user/:repository" component={GraphView} />
       </div>
     </Router>
   );

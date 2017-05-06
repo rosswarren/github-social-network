@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { getData, calculateResults } from '../data/data';
 import Menu from '../menu';
@@ -21,10 +22,6 @@ export default class GraphView extends React.Component {
         approvals: true,
         requestedChanges: true,
         comments: true
-      },
-      repositoryInfo: {
-        user: 'sky-uk',
-        repository: 'atlas-web-and-tv'
       }
     };
 
@@ -35,7 +32,10 @@ export default class GraphView extends React.Component {
     }, 500);
 
     this.updateData = debounce(() => {
-      getData(this.state.repositoryInfo, this.state.limit)
+      getData({
+        user: this.props.match.params.user,
+        repository: this.props.match.params.repository
+      }, this.state.limit)
       .then((data) => {
         this.setState({
           data
@@ -76,18 +76,6 @@ export default class GraphView extends React.Component {
     };
   }
 
-  updateRepositoryInfo() {
-    return (repositoryInfo) => {
-      this.setState({
-        repositoryInfo,
-        data: null,
-        calculatedData: null
-      }, () => {
-        this.updateData();
-      });
-    };
-  }
-
   render() {
     return (
       <div className="graph-view">
@@ -97,8 +85,6 @@ export default class GraphView extends React.Component {
           limit={this.state.limit * 30}
           stateFilters={this.state.stateFilters}
           updateStateFilters={this.updateStateFilters()}
-          repositoryInfo={this.state.repositoryInfo}
-          updateRepositoryInfo={this.updateRepositoryInfo()}
         />
         {
           this.state.calculatedData ? (
@@ -114,3 +100,12 @@ export default class GraphView extends React.Component {
     );
   }
 }
+
+GraphView.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      user: PropTypes.string.isRequired,
+      repository: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
+};

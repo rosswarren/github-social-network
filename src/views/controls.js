@@ -3,26 +3,9 @@ import PropTypes from 'prop-types';
 
 import './controls.css';
 
-function splitRepo(repo) {
-  const parts = repo.split('/');
-
-  return {
-    user: parts[0],
-    repository: parts[1]
-  };
-}
-
 export default function Controls(props) {
   return (
     <form className="controls">
-      <label htmlFor="repo">
-        <span>Repo</span>
-        <input
-          id="repo"
-          value={`${props.repositoryInfo.user}/${props.repositoryInfo.repository}`}
-          onChange={event => props.updateRepositoryInfo(splitRepo(event.target.value))}
-        />
-      </label>
       <label htmlFor="limit">
         Number of Pull Requests
         <input
@@ -75,10 +58,5 @@ Controls.propTypes = {
     approvals: PropTypes.bool.isRequired,
     requestedChanges: PropTypes.bool.isRequired,
     comments: PropTypes.bool.isRequired
-  }).isRequired,
-  repositoryInfo: PropTypes.shape({
-    user: PropTypes.string.isRequired,
-    repository: PropTypes.string.isRequired
-  }).isRequired,
-  updateRepositoryInfo: PropTypes.func.isRequired
+  }).isRequired
 };
