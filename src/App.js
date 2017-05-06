@@ -4,10 +4,10 @@ import {
   Route,
 } from 'react-router-dom';
 
+import 'bulma/css/bulma.css';
+
 import HomeView from './views/home-view';
 import GraphView from './views/graph-view';
-
-import './App.css';
 
 export default function App() {
   return (

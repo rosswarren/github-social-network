@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import vis from 'vis';
 
-import './graph.css';
-
 function renderVis(element, nodes, edges) {
   return new vis.Network(
     element,
@@ -54,7 +52,9 @@ export default class Graph extends Component {
 
   render() {
     return (
-      <div className="graph" ref={(node => this.container = node)} />
+      <div className="level">
+        <div className="level-item" ref={(node => this.container = node)} />
+      </div>
     );
   }
 }
