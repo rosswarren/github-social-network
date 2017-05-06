@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import Menu from '../menu';
 
@@ -46,39 +47,68 @@ class HomeView extends React.Component {
           </div>
         </section>
 
-        <section className="section">
-          <div className="container">
-            <div className="content">
-              <p>
-                Enter a repository in the format user/repository or click one of the examples below
-              </p>
-            </div>
-
-
-            <form onSubmit={this.onSubmit()}>
-              <div className="field has-addons has-addons-centered">
-                <p className="control">
-                  <input
-                    id="repository"
-                    className="input"
-                    type="text"
-                    placeholder="user/repository"
-                    onChange={event => this.setState({
-                      repository: event.target.value
-                    })}
-                  />
-                </p>
-                <p className="control">
-                  <input type="submit" className="button is-primary" value="Go" />
-                </p>
+        {
+          Cookies.get('github-access-token') ? (
+            <section className="section">
+              <div className="container">
+                <div className="content">
+                  <p>
+                    Enter a repository in the format user/repository
+                    or click one of the examples below
+                  </p>
+                </div>
+                <form onSubmit={this.onSubmit()}>
+                  <div className="field has-addons has-addons-centered">
+                    <p className="control">
+                      <input
+                        id="repository"
+                        className="input"
+                        type="text"
+                        placeholder="user/repository"
+                        onChange={event => this.setState({
+                          repository: event.target.value
+                        })}
+                      />
+                    </p>
+                    <p className="control">
+                      <input type="submit" className="button is-primary" value="Go" />
+                    </p>
+                  </div>
+                </form>
+                <ul>
+                  <li><Link to={'/gh/facebook/react'}>facebook/react</Link></li>
+                  <li><Link to={'/gh/babel/babel'}>babel/babel</Link></li>
+                </ul>
               </div>
-            </form>
-            <ul>
-              <li><Link to={'/gh/facebook/react'}>facebook/react</Link></li>
-              <li><Link to={'/gh/babel/babel'}>babel/babel</Link></li>
-            </ul>
-          </div>
-        </section>
+            </section>
+          ) : (
+            <section className="section">
+              <div className="container">
+                <div className="content">
+                  <p>
+                    Welcome to Github Social Network.
+                    This is a tool designed to help you analyse the interactions
+                    around pull requests on Github repositories.
+                  </p>
+
+                  <p>
+                    To begin, you will need to authenticate with Github so that your
+                    browser can access your public and private repositories.
+                  </p>
+
+                  <p>
+                    <a
+                      className="button is-primary"
+                      href="/auth/github"
+                    >
+                      Authenticate with Github
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </section>
+          )
+        }
       </div>
     );
   }
