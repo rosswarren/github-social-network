@@ -29,12 +29,12 @@ export default class HomeView extends React.Component {
         />
         {
           this.validateRepository() && (
-            <Link to={`/graph/${this.state.repository}`}>Go</Link>
+            <Link to={`/gh/${this.state.repository}`}>Go</Link>
           )
         }
         <ul>
-          <li><Link to={'/graph/facebook/react'}>facebook/react</Link></li>
-          <li><Link to={'/graph/babel/babel'}>babel/babel</Link></li>
+          <li><Link to={'/gh/facebook/react'}>facebook/react</Link></li>
+          <li><Link to={'/gh/babel/babel'}>babel/babel</Link></li>
         </ul>
       </div>
     );
