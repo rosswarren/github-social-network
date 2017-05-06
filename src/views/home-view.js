@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 
 import Menu from '../menu';
 
