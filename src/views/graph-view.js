@@ -8,6 +8,8 @@ import debounce from '../utils/debounce';
 import Graph from './graph';
 import Controls from './controls';
 
+import './graph-view.css';
+
 export default class GraphView extends React.Component {
   constructor(props) {
     super(props);
@@ -76,7 +78,7 @@ export default class GraphView extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="graph-view">
         <Menu />
         <Controls
           updateLimit={this.updateLimit()}

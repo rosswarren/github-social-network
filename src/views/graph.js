@@ -52,9 +52,7 @@ export default class Graph extends Component {
 
   render() {
     return (
-      <div className="level">
-        <div className="level-item" ref={(node => this.container = node)} />
-      </div>
+      <div className="vis-container" ref={(node => this.container = node)} />
     );
   }
 }
